@@ -6,8 +6,8 @@ import tkinter as tk
 
 
 def image_placeholder(width):
-    top_left = (width * 0.125, width * 0.125)
-    bottom_right = ((width * 0.75) + (width * 0.125), (width * 0.75) + (width * 0.125))
+    top_left = (width * 0.125 - 5, width * 0.125 - 5)
+    bottom_right = ((width * 0.75) + (width * 0.125) + 5, (width * 0.75) + (width * 0.125) + 5)
     return top_left, bottom_right
 
 
@@ -48,10 +48,20 @@ def stats_field_2(width):
     return points
 
 
-def color_chooser(rgb_range=[0, 255], red_scale=1, green_scale=1, blue_scale=1, brightness_scale=1):
-    return (int(randint(rgb_range[0], rgb_range[1]) * red_scale * brightness_scale),
-            int(randint(rgb_range[0], rgb_range[1]) * green_scale * brightness_scale),
-            int(randint(rgb_range[0], rgb_range[1]) * blue_scale * brightness_scale))
+def color_chooser(rgb_range=None, red_scale=1, green_scale=1, blue_scale=1, brightness_scale=1):
+    if rgb_range is None:
+        rgb_range = [0, 255]
+
+    brightness_factor = (rgb_range[1] - rgb_range[0])/255
+
+    if brightness_factor * brightness_scale < 1:
+        brightness_factor = 1
+
+    return (
+        int(randint(rgb_range[0], rgb_range[1]) * red_scale * (brightness_scale * brightness_factor)),
+        int(randint(rgb_range[0], rgb_range[1]) * green_scale * (brightness_scale * brightness_factor)),
+        int(randint(rgb_range[0], rgb_range[1]) * blue_scale * (brightness_scale * brightness_factor))
+        )
 
 
 def rand_triangle(width, height, shape_size=1 / 4):
@@ -75,8 +85,8 @@ def rand_triangle(width, height, shape_size=1 / 4):
 
 
 def rand_rect_or_ellipse(width, height, shape_size=1 / 4):
-    width = width * 1.25
-    height = height * 1.25
+    width = int(width * 1.25)
+    height = int(height * 1.25)
     x1, y1 = randrange(-50, width) * shape_size, randrange(-50, height) * shape_size
     x2, y2 = randrange(-50, width) * shape_size, randrange(-50, height) * shape_size
 
@@ -108,13 +118,20 @@ def draw_pattern(marker_style=0,
                  visualize_marker=True,
                  folder_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\",
                  image_path="",
-                 use_image=False):
+                 use_image=False,
+                 marker_name="marker",
+                 use_stat_fields=True,
+                 marker_height=None,
+                 rgb_range=None):
+    if rgb_range is None:
+        rgb_range = [0, 255]
     shape_factories = [(rand_triangle, ImageDraw.ImageDraw.polygon),
                        (rand_rect_or_ellipse, ImageDraw.ImageDraw.rectangle),
                        (rand_rect_or_ellipse, ImageDraw.ImageDraw.ellipse)]
 
     bg = bg_color
-    marker_height = int(marker_width * 1.56)
+    if marker_height is None:
+        marker_height = int(marker_width * 1.56)
     result_image = Image.new('RGB', (marker_width, marker_height), bg)
     draw = ImageDraw.Draw(result_image)
     seed(marker_id)
@@ -124,27 +141,27 @@ def draw_pattern(marker_style=0,
         drawn_shape, draw_method = shape_factories[marker_style]
         draw_method(draw,
                     drawn_shape(width=marker_width, height=marker_height, shape_size=shape_size),
-                    fill=color_chooser(red_scale=red_scale, green_scale=green_scale, blue_scale=blue_scale,
+                    fill=color_chooser(rgb_range=rgb_range, red_scale=red_scale, green_scale=green_scale, blue_scale=blue_scale,
                                        brightness_scale=brightness_scale),
-                    outline=color_chooser(red_scale=red_scale, green_scale=green_scale, blue_scale=blue_scale,
+                    outline=color_chooser(rgb_range=rgb_range, red_scale=red_scale, green_scale=green_scale, blue_scale=blue_scale,
                                           brightness_scale=brightness_scale))
     if not create_just_pattern:
+        top_left, bottom_right = image_placeholder(marker_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#cccccc", outline="#444444", width=10)
         if use_image:
             fitting_image, image_offset = fit_image(marker_width, image_path)
             result_image.paste(fitting_image, image_offset)
-        else:
-            top_left, bottom_right = image_placeholder(marker_width)
-            ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#cccccc", outline="#444444", width=2)
 
         top_left, bottom_right = stats_placeholder(marker_width)
         ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#333333", outline="#111111", width=15)
-        points = stats_field_1(marker_width)
-        ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
-        points = stats_field_2(marker_width)
-        ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
+        if use_stat_fields:
+            points = stats_field_1(marker_width)
+            ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
+            points = stats_field_2(marker_width)
+            ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
 
     if save_marker:
-        marker_file_name = "marker" + str(marker_id)
+        marker_file_name = marker_name + str(marker_id)
         result_image.save(folder_path + marker_file_name + ".png")
     if visualize_marker:
         root = tk.Tk()
