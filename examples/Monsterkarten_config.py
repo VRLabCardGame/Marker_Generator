@@ -22,6 +22,23 @@ elemente = ["Blitz.png",
             "Wasser.png",
             "Wasser.png"]
 
+monster_stats = [
+    [2, 2],  # bird1
+    [2, 1],  # bird2
+    [3, 1],  # dog1
+    [3, 0],  # dog2
+    [1, 3],  # fish1
+    [2, 2],  # fish2
+    [4, 1],  # fox1
+    [2, 2],  # fox2
+    [3, 2],  # monkey1
+    [1, 4],  # monkey2
+    [3, 0],  # snake1
+    [2, 1],  # snake2
+    [0, 4],  # turtle1
+    [1, 2]  # turtle2
+]
+
 for i in range(len(images)):
     print(i)
     create_pattern.draw_pattern(marker_style=0,
@@ -41,7 +58,7 @@ for i in range(len(images)):
                                 image_path=path_to_images + images[i],
                                 use_image=True,
                                 marker_name="Monster",
-                                use_stat_fields=True,
+                                stats=monster_stats[i],
                                 use_extra_symbols=True,
                                 extra_symbols=["C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
                                                "\\Modelle\\Objekte\\Schwert.png",

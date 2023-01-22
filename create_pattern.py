@@ -1,6 +1,6 @@
 import math
 
-from PIL import Image, ImageDraw, ImageTk
+from PIL import Image, ImageDraw, ImageTk, ImageFont
 from random import randint, randrange, seed, sample
 import tkinter as tk
 
@@ -130,7 +130,7 @@ def draw_pattern(marker_style=0,
                  image_path="",
                  use_image=False,
                  marker_name="marker",
-                 use_stat_fields=True,
+                 stats=None,
                  marker_height=None,
                  rgb_range=None,
                  use_extra_symbols=False,
@@ -251,11 +251,14 @@ def draw_pattern(marker_style=0,
                                                                       symbol_path=extra_symbols[1],
                                                                       y_pos=marker_width*0.965)
             result_image.paste(def_symbol_fitting, def_symbol_offset, mask=def_symbol_fitting)
-        if use_stat_fields:
+        if stats is not None:
+            font = ImageFont.truetype("arial.ttf", int(marker_width/6))
             points = stats_field_1(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
+            ImageDraw.ImageDraw.text(draw, (marker_width//3.35, marker_width//0.9), str(stats[0]), (50, 50, 50), font=font)
             points = stats_field_2(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
+            draw.text((marker_width//1.67, marker_width//0.9), str(stats[1]), (50, 50, 50), font=font)
 
     if save_marker:
         marker_file_name = marker_name + str(marker_id)
