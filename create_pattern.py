@@ -255,10 +255,10 @@ def draw_pattern(marker_style=0,
             font = ImageFont.truetype("arial.ttf", int(marker_width/6))
             points = stats_field_1(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
-            ImageDraw.ImageDraw.text(draw, (marker_width//3.35, marker_width//0.9), str(stats[0]), (50, 50, 50), font=font)
+            ImageDraw.ImageDraw.text(draw, (marker_width//3.39, marker_width//0.905), str(stats[0]), (50, 50, 50), font=font)
             points = stats_field_2(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
-            draw.text((marker_width//1.67, marker_width//0.9), str(stats[1]), (50, 50, 50), font=font)
+            ImageDraw.ImageDraw.text(draw, (marker_width//1.67, marker_width//0.905), str(stats[1]), (50, 50, 50), font=font)
 
     if save_marker:
         marker_file_name = marker_name + str(marker_id)
