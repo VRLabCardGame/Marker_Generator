@@ -28,8 +28,8 @@ def stats_field_1(width):
     side = 5
     points = [
         (
-            (math.sin(th + 120) + width * 0.0045) * (width*0.095),
-            (math.cos(th + 120) + width * 0.01575) * (width*0.095)
+            (math.sin(th + 120) + width * 0.005) * (width*0.085),  # form + x-pos * größe
+            (math.cos(th + 120) + width * 0.0175) * (width*0.085)  # form + y-pos * größe
         )
         for th in [i * (2 * math.pi) / side for i in range(side)]
     ]
@@ -40,8 +40,8 @@ def stats_field_2(width):
     side = 5
     points = [
         (
-            (math.sin(th + 120) + width * 0.0085) * (width*0.095),
-            (math.cos(th + 120) + width * 0.01575) * (width*0.095)
+            (math.sin(th + 120) + width * 0.00975) * (width*0.085),
+            (math.cos(th + 120) + width * 0.0175) * (width*0.085)
         )
         for th in [i * (2 * math.pi) / side for i in range(side)]
     ]
@@ -122,20 +122,75 @@ def draw_pattern(marker_style=0,
                  shape_size=1 / 4,
                  bg_color="#222222",
                  marker_id=1,
-                 create_just_pattern=False,
                  marker_width=800,
                  save_marker=True,
                  visualize_marker=True,
-                 folder_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\",
-                 image_path="",
-                 use_image=False,
+                 output_path=".\\Marker\\",
                  marker_name="marker",
-                 stats=None,
-                 marker_height=None,
                  rgb_range=None,
+                 marker_height=None,
+                 create_just_pattern=False,
+                 image_path="",
+                 stats=None,
                  use_extra_symbols=False,
                  extra_symbols=None,
                  element=None):
+    """
+    Method to create a Marker suitable as a Vuforia ImageTarget
+
+    :param marker_style: int (possible values: 0,1,2) -> Defines what kind of symbols are printed on the marker (0 = triangles, 1 = rectangles, 2 = circles)
+
+    :param red_scale: int (possible values: 0 ... inf) -> Defines how much the red value of the symbols and borders of the symbols is weighted (higher value, more red)
+
+    :param green_scale: int (possible values: 0 ... inf) -> Defines how much the green value of the symbols and borders of the symbols is weighted (higher value, more green)
+
+    :param blue_scale: int (possible values: 0 ... inf) -> Defines how much the blue value of the symbols and borders of the symbols is weighted (higher value, more blue)
+
+    :param brightness_scale: int (possible values: 0 ... inf) -> adds a multiplicator to all rgb-values of the created symbols. Can be used to increase the contrast of the symbols and the marker, which leads to more found landmarks for the ImageTarget (higher rating, better marker)
+
+    :param shape_number: int (possible values: 0 ... inf) -> Defines how many symbols should be displayed on the Marker. Around 200-500 is a decent value depending on the size of the symbols.
+
+    :param shape_size: float (possible values: 0 ... inf) -> Defines the shape of the symbols. Many small shapes are usually resulting in better markers.
+
+    :param bg_color: String (possible values: '#xxxxxx') -> Defines a background color for the Marker. Uses a hexadecimal encoding of the rgb color.
+
+    :param marker_id: int (possible values: -inf ... inf) -> Defines a seed for the random generation of the symbols. Is used to replicate a marker. (e.g. marker_id = 1 will always generate symbols in the same position and shape. using different color or shape_type settings generates a different marker.)
+
+    :param marker_width: int (possible values: 0 ... inf) -> Defines the width of the resulting Marker in px.
+
+    :param save_marker: bool -> Defines if the Marker should be saved as a .png or not.
+
+    :param visualize_marker: bool -> Defines if the markers should be visualized after they are created.
+    !WARNING!: Dont use visualization if you want to generate multiple markers at once because the program will wait
+    for you to close the visualized marker before generating a the next one.
+
+    :param output_path: String (possible values: a path encodes as a String) -> Defines a custom output path for the saved Markers. If not specified defaults to .\\Marker\\
+
+    :param marker_name: String (possible values: a name for the created Marker) -> Defines a custom name for the saved Marker. If not specified defaults to marker
+
+    :param rgb_range: List[int, int] (possible values: first int: 0 ... 255, second int: 0 ... 255 >= first int) -> Defines a range of values the generated symbols can be colored in. Is used for all 3 rgb-channels. This way you can limit the color spectrum to a certain level.
+
+    :param marker_height: int (possible values: 0 ... inf) -> Defines a height for the created Marker in px. If not specified defaults to marker_width * 1.56
+
+    :param create_just_pattern: bool -> Defines if the Marker should contain anything else than just the plain marker.
+
+    Every parameter after the create_just_pattern-parameter is specifically used to create card markers for the Hololens
+    CARdGame. If you intend to use this module for another project, you might run into difficulties.
+    -------------------------------------------------------------------------------------
+
+    :param image_path: String (possible values: Path to an input image as a String) -> Defines an input Image which is resized to be quadratic and is placed in the top half of the Marker. create_just_pattern must be False.
+
+    :param stats: List[int, int] (possible values: first int: -inf ... inf, second int: -inf ... inf) -> Defines an offensive (first int) and defensive (second int) stat that are displayed in the lower half of the Marker. create_just_pattern must be False.
+
+    :param use_extra_symbols: bool -> Defines if the stat fields should have a special symbol as their background. extra_symbols must be defined. create_just_pattern must be False.
+
+    :param extra_symbols: List[String, String] (possible values: Path to two images one for each stat) -> Defines the Images used as a background behind the stat fields. For best results use Images with blank background.
+
+    :param element: String (possible values: Path to an image that is displayed as a background of the lower part of the Marker) -> Defines the Image used as a background of the lower part of the Marker. Called element because in the CARdGame-Application the element symbol of a monster was displayed here.
+
+    :return: None
+
+    """
     if extra_symbols is None:
         extra_symbols = [
             "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Modelle\\Objekte\\Schwert.png",
@@ -181,7 +236,7 @@ def draw_pattern(marker_style=0,
         # draws placeholder
         top_left, bottom_right = image_placeholder(marker_width)
         ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#cccccc", outline="#444444", width=10)
-        if use_image:
+        if image_path is not "":
             # draw image
             fitting_image, image_offset = fit_image(marker_width, image_path)
             result_image.paste(fitting_image, image_offset)
@@ -231,7 +286,7 @@ def draw_pattern(marker_style=0,
             element_symbol_fitting.putalpha(newA)
             result_image.paste(element_symbol_fitting, element_symbol_offset, mask=element_symbol_fitting)
 
-            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width*0.4,
+            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width*0.35,
                                                                               x_pos=top_left[0],
                                                                               symbol_path=element,
                                                                               y_pos=top_left[1])
@@ -241,28 +296,28 @@ def draw_pattern(marker_style=0,
             result_image.paste(element_symbol_fitting, element_symbol_offset, mask=element_symbol_fitting)
 
         if use_extra_symbols:
-            atk_symbol_fitting, atk_symbol_offset = draw_extra_symbol(size=marker_width*0.45,
-                                                                      x_pos=marker_width*0.12,
+            atk_symbol_fitting, atk_symbol_offset = draw_extra_symbol(size=marker_width*0.4,
+                                                                      x_pos=marker_width*0.14,
                                                                       symbol_path=extra_symbols[0],
-                                                                      y_pos=marker_width*0.98)
+                                                                      y_pos=marker_width*0.985)
             result_image.paste(atk_symbol_fitting, atk_symbol_offset, mask=atk_symbol_fitting)
-            def_symbol_fitting, def_symbol_offset = draw_extra_symbol(size=marker_width*0.45,
-                                                                      x_pos=marker_width*0.42,
+            def_symbol_fitting, def_symbol_offset = draw_extra_symbol(size=marker_width*0.4,
+                                                                      x_pos=marker_width*0.4635,
                                                                       symbol_path=extra_symbols[1],
-                                                                      y_pos=marker_width*0.965)
+                                                                      y_pos=marker_width*0.985)
             result_image.paste(def_symbol_fitting, def_symbol_offset, mask=def_symbol_fitting)
         if stats is not None:
-            font = ImageFont.truetype("arial.ttf", int(marker_width/6))
+            font = ImageFont.truetype("arial.ttf", int(marker_width/7))
             points = stats_field_1(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
-            ImageDraw.ImageDraw.text(draw, (marker_width//3.39, marker_width//0.905), str(stats[0]), (50, 50, 50), font=font)
+            ImageDraw.ImageDraw.text(draw, (marker_width//3.35, marker_width//0.9), str(stats[0]), (50, 50, 50), font=font)
             points = stats_field_2(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
-            ImageDraw.ImageDraw.text(draw, (marker_width//1.67, marker_width//0.905), str(stats[1]), (50, 50, 50), font=font)
+            ImageDraw.ImageDraw.text(draw, (marker_width//1.6, marker_width//0.9), str(stats[1]), (50, 50, 50), font=font)
 
     if save_marker:
         marker_file_name = marker_name + str(marker_id)
-        result_image.save(folder_path + marker_file_name + ".png")
+        result_image.save(output_path + marker_file_name + ".png")
     if visualize_marker:
         root = tk.Tk()
         tk_image = ImageTk.PhotoImage(result_image)

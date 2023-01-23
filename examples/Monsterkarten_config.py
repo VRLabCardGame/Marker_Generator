@@ -53,10 +53,9 @@ for i in range(len(images)):
                                 marker_width=800,
                                 save_marker=True,
                                 visualize_marker=False,
-                                folder_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
+                                output_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
                                             "\\Generated_Cards\\Monster\\",
                                 image_path=path_to_images + images[i],
-                                use_image=True,
                                 marker_name="Monster",
                                 stats=monster_stats[i],
                                 use_extra_symbols=True,

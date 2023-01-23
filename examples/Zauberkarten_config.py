@@ -21,9 +21,7 @@ for i in range(len(images)):
                                 marker_width=800,
                                 save_marker=True,
                                 visualize_marker=False,
-                                folder_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
+                                output_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
                                             "\\Generated_Cards\\Zauber\\",
                                 image_path=path_to_images + images[i],
-                                use_image=True,
-                                marker_name="Zauber",
-                                use_stat_fields=False)
+                                marker_name="Zauber")
