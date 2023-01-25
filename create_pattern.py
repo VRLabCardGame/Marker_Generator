@@ -13,8 +13,8 @@ def image_placeholder(width):
 
 def fit_image(width, image_path):
     image_to_place = Image.open(image_path)
-    image_resized = image_to_place.resize(size=(int(width*0.75), int(width*0.75)), resample=0)
-    image_position = int(width*0.125), int(width*0.125)
+    image_resized = image_to_place.resize(size=(int(width * 0.75), int(width * 0.75)), resample=0)
+    image_position = int(width * 0.125), int(width * 0.125)
     return image_resized, image_position
 
 
@@ -28,8 +28,8 @@ def stats_field_1(width):
     side = 5
     points = [
         (
-            (math.sin(th + 120) + width * 0.005) * (width*0.085),  # form + x-pos * größe
-            (math.cos(th + 120) + width * 0.0175) * (width*0.085)  # form + y-pos * größe
+            (math.sin(th + 120) + width * 0.0025) * (width * 0.085),  # form + x-pos * größe
+            (math.cos(th + 120) + width * 0.00875) * (width * 0.085)  # form + y-pos * größe
         )
         for th in [i * (2 * math.pi) / side for i in range(side)]
     ]
@@ -40,8 +40,8 @@ def stats_field_2(width):
     side = 5
     points = [
         (
-            (math.sin(th + 120) + width * 0.00975) * (width*0.085),
-            (math.cos(th + 120) + width * 0.0175) * (width*0.085)
+            (math.sin(th + 120) + width * 0.0049) * (width * 0.085),
+            (math.cos(th + 120) + width * 0.00875) * (width * 0.085)
         )
         for th in [i * (2 * math.pi) / side for i in range(side)]
     ]
@@ -52,7 +52,7 @@ def color_chooser(rgb_range=None, red_scale=1, green_scale=1, blue_scale=1, brig
     if rgb_range is None:
         rgb_range = [0, 255]
 
-    brightness_factor = (rgb_range[1] - rgb_range[0])/255
+    brightness_factor = (rgb_range[1] - rgb_range[0]) / 255
 
     if brightness_factor * brightness_scale < 1:
         brightness_factor = 1
@@ -61,7 +61,7 @@ def color_chooser(rgb_range=None, red_scale=1, green_scale=1, blue_scale=1, brig
         int(randint(rgb_range[0], rgb_range[1]) * red_scale * (brightness_scale * brightness_factor)),
         int(randint(rgb_range[0], rgb_range[1]) * green_scale * (brightness_scale * brightness_factor)),
         int(randint(rgb_range[0], rgb_range[1]) * blue_scale * (brightness_scale * brightness_factor))
-        )
+    )
 
 
 def rand_triangle(width, height, shape_size=1 / 4):
@@ -134,7 +134,8 @@ def draw_pattern(marker_style=0,
                  stats=None,
                  use_extra_symbols=False,
                  extra_symbols=None,
-                 element=None):
+                 element=None,
+                 text=None):
     """
     Method to create a Marker suitable as a Vuforia ImageTarget
 
@@ -187,6 +188,8 @@ def draw_pattern(marker_style=0,
     :param extra_symbols: List[String, String] (possible values: Path to two images one for each stat) -> Defines the Images used as a background behind the stat fields. For best results use Images with blank background.
 
     :param element: String (possible values: Path to an image that is displayed as a background of the lower part of the Marker) -> Defines the Image used as a background of the lower part of the Marker. Called element because in the CARdGame-Application the element symbol of a monster was displayed here.
+
+    :param text: String (possible values: short String to describe the effect of a card) -> Auto linebreak after 12 characters
 
     :return: None
 
@@ -246,7 +249,6 @@ def draw_pattern(marker_style=0,
         ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#333333", outline="#111111", width=15)
 
         if element is not None:
-
             def crop_center(pil_img, crop_width, crop_height):
                 img_width, img_height = pil_img.size
                 return pil_img.crop(((img_width - crop_width) // 2,
@@ -254,13 +256,13 @@ def draw_pattern(marker_style=0,
                                      (img_width + crop_width) // 2,
                                      (img_height + crop_height) // 2))
 
-            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width*20,
+            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width * 20,
                                                                               x_pos=top_left[0],
                                                                               symbol_path=element,
                                                                               y_pos=top_left[1])
             element_symbol_fitting = crop_center(element_symbol_fitting,
-                                                 bottom_right[0]-top_left[0],
-                                                 bottom_right[1]-top_left[1])
+                                                 bottom_right[0] - top_left[0],
+                                                 bottom_right[1] - top_left[1])
             A = element_symbol_fitting.getchannel('A')
 
             # Make all opaque pixels into semi-opaque
@@ -270,13 +272,13 @@ def draw_pattern(marker_style=0,
             element_symbol_fitting.putalpha(newA)
             result_image.paste(element_symbol_fitting, element_symbol_offset, mask=element_symbol_fitting)
 
-            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width*1,
+            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width * 1,
                                                                               x_pos=top_left[0],
                                                                               symbol_path=element,
                                                                               y_pos=top_left[1])
             element_symbol_fitting = crop_center(element_symbol_fitting,
-                                                 bottom_right[0]-top_left[0],
-                                                 bottom_right[1]-top_left[1])
+                                                 bottom_right[0] - top_left[0],
+                                                 bottom_right[1] - top_left[1])
             A = element_symbol_fitting.getchannel('A')
 
             # Make all opaque pixels into semi-opaque
@@ -286,34 +288,48 @@ def draw_pattern(marker_style=0,
             element_symbol_fitting.putalpha(newA)
             result_image.paste(element_symbol_fitting, element_symbol_offset, mask=element_symbol_fitting)
 
-            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width*0.35,
+            element_symbol_fitting, element_symbol_offset = draw_extra_symbol(size=marker_width * 0.35,
                                                                               x_pos=top_left[0],
                                                                               symbol_path=element,
                                                                               y_pos=top_left[1])
             element_symbol_fitting = crop_center(element_symbol_fitting,
-                                                 bottom_right[0]-top_left[0],
-                                                 bottom_right[1]-top_left[1])
+                                                 bottom_right[0] - top_left[0],
+                                                 bottom_right[1] - top_left[1])
             result_image.paste(element_symbol_fitting, element_symbol_offset, mask=element_symbol_fitting)
 
         if use_extra_symbols:
-            atk_symbol_fitting, atk_symbol_offset = draw_extra_symbol(size=marker_width*0.4,
-                                                                      x_pos=marker_width*0.14,
+            atk_symbol_fitting, atk_symbol_offset = draw_extra_symbol(size=marker_width * 0.4,
+                                                                      x_pos=marker_width * 0.14,
                                                                       symbol_path=extra_symbols[0],
-                                                                      y_pos=marker_width*0.985)
+                                                                      y_pos=marker_width * 0.985)
             result_image.paste(atk_symbol_fitting, atk_symbol_offset, mask=atk_symbol_fitting)
-            def_symbol_fitting, def_symbol_offset = draw_extra_symbol(size=marker_width*0.4,
-                                                                      x_pos=marker_width*0.4635,
+            def_symbol_fitting, def_symbol_offset = draw_extra_symbol(size=marker_width * 0.4,
+                                                                      x_pos=marker_width * 0.4635,
                                                                       symbol_path=extra_symbols[1],
-                                                                      y_pos=marker_width*0.985)
+                                                                      y_pos=marker_width * 0.985)
             result_image.paste(def_symbol_fitting, def_symbol_offset, mask=def_symbol_fitting)
         if stats is not None:
-            font = ImageFont.truetype("arial.ttf", int(marker_width/7))
+            font = ImageFont.truetype("arial.ttf", int(marker_width / 7))
             points = stats_field_1(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
-            ImageDraw.ImageDraw.text(draw, (marker_width//3.35, marker_width//0.9), str(stats[0]), (50, 50, 50), font=font)
+            ImageDraw.ImageDraw.text(draw, (marker_width // 3.35, marker_width // 0.9), str(stats[0]), (50, 50, 50),
+                                     font=font)
             points = stats_field_2(marker_width)
             ImageDraw.ImageDraw.polygon(draw, xy=points, fill="#cccccc", outline="#444444", width=5)
-            ImageDraw.ImageDraw.text(draw, (marker_width//1.6, marker_width//0.9), str(stats[1]), (50, 50, 50), font=font)
+            ImageDraw.ImageDraw.text(draw, (marker_width // 1.6, marker_width // 0.9), str(stats[1]), (50, 50, 50),
+                                     font=font)
+        elif text is not None:
+            font = ImageFont.truetype("arial.ttf", int(marker_width / 11))
+            if len(text) > 12 and "\n" not in text:
+                out = [(text[i:i + 12]) for i in range(0, len(text), 12)]
+                text = ""
+                for part in out:
+                    text = text + "\n" + part
+                text = text + "\n "
+            _, _, w, h = ImageDraw.ImageDraw.textbbox(draw, (0, 0), text, font=font)
+            ImageDraw.ImageDraw.text(draw, (
+                (marker_width - w) / 2, (bottom_right[1] - top_left[1] - h*1.1) / 2 + top_left[1]), text,
+                                     font=font, align="center")
 
     if save_marker:
         marker_file_name = marker_name + str(marker_id)

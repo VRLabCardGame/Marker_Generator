@@ -44,13 +44,13 @@ for i in range(len(images)):
     create_pattern.draw_pattern(marker_style=0,
                                 red_scale=1,
                                 green_scale=0.1,
-                                blue_scale=0,
+                                blue_scale=0.1,
                                 brightness_scale=10,
                                 shape_number=500,
                                 shape_size=1 / 15,
                                 marker_id=i + 100,
                                 create_just_pattern=False,
-                                marker_width=800,
+                                marker_width=1600,
                                 save_marker=True,
                                 visualize_marker=False,
                                 output_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
@@ -64,4 +64,6 @@ for i in range(len(images)):
                                                "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
                                                "\\Modelle\\Objekte\\Schild.png"],
                                 element="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                        "\\Modelle\\Elemente\\" + elemente[i])
+                                        "\\Modelle\\Elemente\\" + elemente[i],
+                                rgb_range=[255, 255],
+                                bg_color="#222222")
