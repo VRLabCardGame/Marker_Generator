@@ -2,7 +2,7 @@ import os
 
 import create_pattern
 
-path_to_images = "../../Modelle/Monster\\"
+path_to_images = "../../Modelle/Monster_v2/"
 
 images = os.listdir(path_to_images)
 print(images)
@@ -11,6 +11,8 @@ elemente = ["Blitz.png",
             "Blitz.png",
             "Blitz.png",
             "Blitz.png",
+            "Feuer.png",
+            "Feuer.png",
             "Wasser.png",
             "Wasser.png",
             "Feuer.png",
@@ -27,6 +29,8 @@ monster_stats = [
     [2, 1],  # bird2
     [3, 1],  # dog1
     [3, 0],  # dog2
+    [3, 1],  # dragon1
+    [4, 0],  # dragon2
     [1, 3],  # fish1
     [2, 2],  # fish2
     [4, 1],  # fox1

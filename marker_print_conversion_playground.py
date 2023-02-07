@@ -4,7 +4,7 @@ import PIL
 from PIL import Image
 
 path_to_playground_marker = "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards" \
-                            "\\Spielfeld\\spielfeld_complete.png "
+                            "\\Spielfeld\\spielfeld_complete_full_asym.png "
 
 images = []
 pos = 0
@@ -18,14 +18,19 @@ for x in range(0, 8):
     a4im = Image.new('RGB',
                      (int(595 * 1.31), int(842 * 1.31)),  # A4 at 72dpi
                      (255, 255, 255))  # White
-    if pos == 0:
-        position = (0, 0)
-    elif pos == 1:
-        position = (int(-img.size[1] / 2), 0)
-    elif pos == 2:
-        position = (int(-img.size[1] / 2), int(-img.size[0] / 2))
+    if x > 3:
+        start = -img.size[1]/2
     else:
-        position = (0, int(-img.size[0] / 2))
+        start = 0
+
+    if pos == 0:
+        position = (0 + int(start), 0)
+    elif pos == 1:
+        position = (int(-img.size[1] / 4 + int(start)), 0)
+    elif pos == 2:
+        position = (int(-img.size[1] / 4 + int(start)), int(-img.size[0] / 2))
+    else:
+        position = (0 + int(start), int(-img.size[0] / 2))
 
     img = img.rotate(90, expand=True, fillcolor=(255, 255, 255))
     a4im.paste(img, position)

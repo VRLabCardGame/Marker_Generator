@@ -39,6 +39,6 @@ for i in range(len(images)):
                                             "\\Generated_Cards\\Zauber\\",
                                 image_path=path_to_images + images[i],
                                 marker_name="Zauber",
-                                rgb_range=[255, 255],
-                                bg_color="#222222",
+                                rgb_range=[0, 0],
+                                bg_color="#dddddd",
                                 text=texts[i])

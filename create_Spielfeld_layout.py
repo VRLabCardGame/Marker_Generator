@@ -58,54 +58,61 @@ def create_layout(background_img_path,
     result_image = Image.new('RGB', (background_width, background_height), bg)
     draw = ImageDraw.Draw(result_image)
 
-    image_to_place = Image.open(background_img_path)
-    image_resized = image_to_place.resize(size=(int(background_width), int(background_height)), resample=0)
-    image_position = 0, 0
-    result_image.paste(image_resized, image_position)
-    top_left, bottom_right = create_death_zone_p1(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#222222", outline="#444444", width=7)
+    for x in range(len(background_img_path)):
+        image_to_place = Image.open(background_img_path[x])
+        image_resized = image_to_place.resize(size=(int(background_width/6), int(background_height/6)), resample=0)
+        image_position = int(background_width/2 - background_width/6/2), int(background_height - background_height/6)
+        result_image.paste(image_resized, image_position)
+        top_left, bottom_right = create_death_zone_p1(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#222222", outline="#444444", width=7)
 
-    top_left, bottom_right = create_draw_zone_p1(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#cccccc", outline="#444444", width=7)
+        top_left, bottom_right = create_draw_zone_p1(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#cccccc", outline="#444444", width=7)
 
-    top_left, bottom_right = create_spell_zone_p1(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#FF4B4B", outline="#444444", width=7)
+        top_left, bottom_right = create_spell_zone_p1(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#FF4B4B", outline="#444444", width=7)
 
-    top_left, bottom_right = create_monster_zone1_p1(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#767171", outline="#444444", width=7)
+        top_left, bottom_right = create_monster_zone1_p1(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#767171", outline="#444444", width=7)
 
-    top_left, bottom_right = create_monster_zone2_p1(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#767171", outline="#444444", width=7)
+        top_left, bottom_right = create_monster_zone2_p1(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#767171", outline="#444444", width=7)
 
-    top_left, bottom_right = create_fight_zone_p1(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#C00000", outline="#444444", width=7)
-    top_left, bottom_right = create_fight_zone_p2(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#C00000", outline="#444444", width=7)
-    top_left, bottom_right = create_field_separator(background_width)
-    ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], outline="#CF4444", width=25)
+        top_left, bottom_right = create_fight_zone_p1(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#C00000", outline="#444444", width=7)
+        top_left, bottom_right = create_fight_zone_p2(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#C00000", outline="#444444", width=7)
+        top_left, bottom_right = create_field_separator(background_width)
+        ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], outline="#CF4444", width=25)
 
-    marker_file_name = "Spielfeld_complete"
-    result_image.save("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                      "\\Generated_Cards\\Spielfeld\\" + marker_file_name + ".png")
+        marker_file_name = "Spielfeld_complete"
+        result_image.save("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
+                          "\\Generated_Cards\\Spielfeld\\" + marker_file_name + str(x) + ".png")
 
     result_image_full = Image.new('RGB', (background_width, background_height * 2), bg)
 
     image_to_place = Image.open("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                "\\Generated_Cards\\Spielfeld\\" + marker_file_name + ".png")
+                                "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "0.png")
     image_resized = image_to_place.resize(size=(int(background_width), int(background_height)), resample=0)
     image_position = 0, 0
     result_image_full.paste(image_resized, image_position)
 
     image_position_2 = 0, background_height
-    image_rotated = image_to_place.rotate(angle=180.0)
+    image_to_place = Image.open("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
+                                "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "1.png")
+    image_resized = image_to_place.resize(size=(int(background_width), int(background_height)), resample=0)
+    image_rotated = image_resized.rotate(angle=180.0)
     result_image_full.paste(image_rotated, image_position_2)
     result_image_full.save("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                           "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "_full.png")
+                           "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "_full_asym.png")
 
 
 def main():
-    create_layout("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                  "\\Generated_Cards\\Spielfeld\\Spielfeld100000.png", 2048, 1536)
+    create_layout(["C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Spielfeld"
+                   "\\Spielfeld_v2100000.png",
+                   "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Spielfeld"
+                   "\\Spielfeld_v2100001.png "
+    ], 2048, 1536, bg_color="#eeeeee")
 
 
 main()
