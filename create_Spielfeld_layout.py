@@ -58,11 +58,7 @@ def create_layout(background_img_path,
     result_image = Image.new('RGB', (background_width, background_height), bg)
     draw = ImageDraw.Draw(result_image)
 
-    for x in range(len(background_img_path)):
-        image_to_place = Image.open(background_img_path[x])
-        image_resized = image_to_place.resize(size=(int(background_width/6), int(background_height/6)), resample=0)
-        image_position = int(background_width/2 - background_width/6/2), int(background_height - background_height/6)
-        result_image.paste(image_resized, image_position)
+    for x in range(0, 2):
         top_left, bottom_right = create_death_zone_p1(background_width)
         ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], fill="#222222", outline="#444444", width=7)
 
@@ -103,16 +99,20 @@ def create_layout(background_img_path,
     image_resized = image_to_place.resize(size=(int(background_width), int(background_height)), resample=0)
     image_rotated = image_resized.rotate(angle=180.0)
     result_image_full.paste(image_rotated, image_position_2)
+
+    image_to_place = Image.open(background_img_path)
+    image_resized = image_to_place.resize(size=(int(result_image_full.width / 6), int(result_image_full.height / 6)), resample=0)
+    image_position = int(background_width / 2 - background_width / 6 / 2), int(
+        background_height - background_height / 6)
+    result_image_full.paste(image_resized, image_position)
+
     result_image_full.save("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
                            "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "_full_asym.png")
 
 
 def main():
-    create_layout(["C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Spielfeld"
-                   "\\Spielfeld_v2100000.png",
-                   "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Spielfeld"
-                   "\\Spielfeld_v2100001.png "
-    ], 2048, 1536, bg_color="#eeeeee")
+    create_layout("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Spielfeld"
+                  "\\Spielfeld_v2100000.png", 2048, 1536, bg_color="#eeeeee")
 
 
 main()

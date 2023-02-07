@@ -129,7 +129,7 @@ def draw_pattern(marker_style=0,
                  marker_name="marker",
                  rgb_range=None,
                  marker_height=None,
-                 create_just_pattern=False,
+                 create_just_pattern=True,
                  image_path="",
                  stats=None,
                  use_extra_symbols=False,
@@ -196,8 +196,8 @@ def draw_pattern(marker_style=0,
     """
     if extra_symbols is None:
         extra_symbols = [
-            "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Modelle\\Objekte\\Schwert.png",
-            "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Modelle\\Objekte\\Schild.png", ]
+            "",
+            ""]
     # sets default rgb_range
     if rgb_range is None:
         rgb_range = [0, 255]
