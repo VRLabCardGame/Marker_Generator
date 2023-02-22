@@ -1,7 +1,7 @@
 # **Bedienungsanleitung AR-Marker pattern-creator**
 In diesem Repository befinden sich Skripte zur Erstellung von AR-Markern
 sowie weitere Skripte zur Erstellung von Assets für das Kartenspiel des VRLabs 
-der Hochschule Reutlingen.\
+der Hochschule Reutlingen.
 
 ## Anforderungen:
 - python 3.7.9
