@@ -82,20 +82,17 @@ def create_layout(background_img_path,
         ImageDraw.ImageDraw.rectangle(draw, xy=[top_left, bottom_right], outline="#CF4444", width=25)
 
         marker_file_name = "Spielfeld_complete"
-        result_image.save("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                          "\\Generated_Cards\\Spielfeld\\" + marker_file_name + str(x) + ".png")
+        result_image.save("..\\..\\Generated_Cards\\Spielfeld\\" + marker_file_name + str(x) + ".png")
 
     result_image_full = Image.new('RGB', (background_width, background_height * 2), bg)
 
-    image_to_place = Image.open("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "0.png")
+    image_to_place = Image.open("..\\..\\Generated_Cards\\Spielfeld\\" + marker_file_name + "0.png")
     image_resized = image_to_place.resize(size=(int(background_width), int(background_height)), resample=0)
     image_position = 0, 0
     result_image_full.paste(image_resized, image_position)
 
     image_position_2 = 0, background_height
-    image_to_place = Image.open("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "1.png")
+    image_to_place = Image.open("..\\..\\Generated_Cards\\Spielfeld\\" + marker_file_name + "1.png")
     image_resized = image_to_place.resize(size=(int(background_width), int(background_height)), resample=0)
     image_rotated = image_resized.rotate(angle=180.0)
     result_image_full.paste(image_rotated, image_position_2)
@@ -106,12 +103,11 @@ def create_layout(background_img_path,
         background_height - background_height / 6)
     result_image_full.paste(image_resized, image_position)
 
-    result_image_full.save("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                           "\\Generated_Cards\\Spielfeld\\" + marker_file_name + "_full_asym.png")
+    result_image_full.save("..\\..\\Generated_Cards\\Spielfeld\\" + marker_file_name + "_full_asym.png")
 
 
 def main():
-    create_layout("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Spielfeld"
+    create_layout("..\\..\\Generated_Cards\\Spielfeld"
                   "\\Spielfeld_v2100000.png", 2048, 1536, bg_color="#eeeeee")
 
 
