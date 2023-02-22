@@ -3,8 +3,7 @@ import os
 import PIL
 from PIL import Image
 
-path_to_playground_marker = "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards" \
-                            "\\Spielfeld\\spielfeld_complete_full_asym.png "
+path_to_playground_marker = "..\\Generated_Cards\\Spielfeld\\spielfeld_complete_full_asym.png "
 
 images = []
 pos = 0
@@ -43,4 +42,4 @@ for x in range(0, 8):
 if a4im is not None:
     images.append(a4im)
 
-images[0].save("../Generated_Cards/playground_print.pdf", format="PDF", save_all=True, append_images=images[1:], resolution=100)
+images[0].save("..\\Generated_Cards\\playground_print.pdf", format="PDF", save_all=True, append_images=images[1:], resolution=100)

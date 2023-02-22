@@ -3,8 +3,8 @@ import os
 import PIL
 from PIL import Image
 
-path_to_monster_markers = "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Monster\\"
-path_to_spell_markers = "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten\\Generated_Cards\\Zauber\\"
+path_to_monster_markers = "..\\Generated_Cards\\Monster\\"
+path_to_spell_markers = "..\\Generated_Cards\\Zauber\\"
 
 images = []
 pos = 0
@@ -42,4 +42,4 @@ for i in range(0, 1):
     if a4im is not None:
         images.append(a4im)
 
-images[0].save("../Generated_Cards/print_v2.pdf", format="PDF", save_all=True, append_images=images[1:], resolution=100)
+images[0].save("..\\Generated_Cards\\print_v2.pdf", format="PDF", save_all=True, append_images=images[1:], resolution=100)

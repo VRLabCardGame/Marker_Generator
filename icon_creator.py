@@ -1,8 +1,8 @@
 from PIL import Image
 
 
-im = Image.open("C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Cardgame_Icon.png")
-output_path = "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Cardgame_Icon\\"
+im = Image.open("..\\..\\Cardgame_Icon.png")
+output_path = "..\\..\\Cardgame_Icon\\"
 
 im_1 = im.resize(size=(88, 88), resample=0)
 
