@@ -14,7 +14,6 @@ create_pattern.draw_pattern(marker_style=1,
                             marker_width=1600,
                             save_marker=True,
                             visualize_marker=False,
-                            output_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                        "\\Generated_Cards\\Spielfeld\\",
-                            marker_name="Spielfeld_v2",
+                            output_path="..\\..\\Generated_Cards\\Spielfeld\\",
+                            marker_name="Spielfeld",
                             rgb_range=[230, 230])

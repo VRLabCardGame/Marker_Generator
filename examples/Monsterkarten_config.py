@@ -2,7 +2,7 @@ import os
 
 import create_pattern
 
-path_to_images = "../../Modelle/Monster_v2/"
+path_to_images = "..\\..\\Modelle\\Monster_v2\\"
 
 images = os.listdir(path_to_images)
 print(images)
@@ -57,17 +57,13 @@ for i in range(len(images)):
                                 marker_width=1600,
                                 save_marker=True,
                                 visualize_marker=False,
-                                output_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                            "\\Generated_Cards\\Monster\\",
+                                output_path="..\\..\\Generated_Cards\\Monster\\",
                                 image_path=path_to_images + images[i],
                                 marker_name="Monster",
                                 stats=monster_stats[i],
                                 use_extra_symbols=True,
-                                extra_symbols=["C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                               "\\Modelle\\Objekte\\Schwert.png",
-                                               "C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                               "\\Modelle\\Objekte\\Schild.png"],
-                                element="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                        "\\Modelle\\Elemente\\" + elemente[i],
+                                extra_symbols=["..\\..\\Modelle\\Objekte\\Schwert.png",
+                                               "..\\..\\Modelle\\Objekte\\Schild.png"],
+                                element="..\\..\\Modelle\\Elemente\\" + elemente[i],
                                 rgb_range=[255, 255],
                                 bg_color="#222222")

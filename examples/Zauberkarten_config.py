@@ -2,7 +2,7 @@ import os
 
 import create_pattern
 
-path_to_images = "../../Modelle/Zauber\\"
+path_to_images = "..\\..\\Modelle\\Zauber\\"
 
 images = os.listdir(path_to_images)
 print(images)
@@ -35,8 +35,7 @@ for i in range(len(images)):
                                 marker_width=1600,
                                 save_marker=True,
                                 visualize_marker=False,
-                                output_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                            "\\Generated_Cards\\Zauber\\",
+                                output_path="..\\..\\Generated_Cards\\Zauber\\",
                                 image_path=path_to_images + images[i],
                                 marker_name="Zauber",
                                 rgb_range=[0, 0],

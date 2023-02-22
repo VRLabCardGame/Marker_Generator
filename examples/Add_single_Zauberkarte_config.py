@@ -2,7 +2,7 @@ import os
 
 import create_pattern
 
-path_to_image = "../../Modelle/Zauber/Draw_2.png"
+path_to_image = "..\\..\\Modelle\\Zauber\\Draw_2.png"
 create_pattern.draw_pattern(marker_style=0,
                             red_scale=0.2,
                             green_scale=0.1,
@@ -15,7 +15,6 @@ create_pattern.draw_pattern(marker_style=0,
                             marker_width=1600,
                             save_marker=True,
                             visualize_marker=False,
-                            output_path="C:\\Users\\Jonas\\Documents\\Studium\\Master\\01_VRLab\\Karten"
-                                        "\\Generated_Cards\\Zauber\\",
+                            output_path="..\\..\\Generated_Cards\\Zauber\\",
                             image_path=path_to_image,
                             marker_name="Zauber")
